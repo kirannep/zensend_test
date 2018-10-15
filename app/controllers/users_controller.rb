@@ -1,5 +1,9 @@
 class UsersController < ApplicationController
+    skip_before_action :verify_authenticity_token
 
+    require 'zensend'
+    require 'api'
+    
     def hello
     @users = User.all
     end
@@ -28,7 +32,7 @@ class UsersController < ApplicationController
           if @user.save
             format.html { redirect_to hello_path, notice: 'User was successfully created.' }
             format.json { render :show, status: :created, location: @user }
-            # Api.sms_request(user_params)
+            Api.sms_request(user_params)
     
           else
             format.html { render :new }
